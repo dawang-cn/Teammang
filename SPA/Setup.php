@@ -1,19 +1,19 @@
 <?php
-// Database connection setup
+
 $servername = "localhost";
-$username = "root"; // Update as needed
-$password = ""; // Update as needed
+$username = "root"; 
+$password = ""; 
 $dbname = "spa";
 
-// Create connection
+
 $conn = new mysqli($servername, $username, $password);
 
-// Check connection
+
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Create database
+
 $sql = "CREATE DATABASE IF NOT EXISTS $dbname";
 if ($conn->query($sql) === TRUE) {
     echo "Database created successfully.<br>";
@@ -21,10 +21,10 @@ if ($conn->query($sql) === TRUE) {
     echo "Error creating database: " . $conn->error . "<br>";
 }
 
-// Select database
+
 $conn->select_db($dbname);
 
-// Create Users Table
+
 $sql = "CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -39,7 +39,7 @@ if ($conn->query($sql) === TRUE) {
     echo "Error creating users table: " . $conn->error . "<br>";
 }
 
-// Create Services Table
+//
 $sql = "CREATE TABLE IF NOT EXISTS services (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -54,7 +54,7 @@ if ($conn->query($sql) === TRUE) {
     echo "Error creating services table: " . $conn->error . "<br>";
 }
 
-// Create Appointments Table
+
 $sql = "CREATE TABLE IF NOT EXISTS appointments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -71,7 +71,7 @@ if ($conn->query($sql) === TRUE) {
     echo "Error creating appointments table: " . $conn->error . "<br>";
 }
 
-// Create Payments Table
+
 $sql = "CREATE TABLE IF NOT EXISTS payments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     appointment_id INT NOT NULL,
@@ -86,7 +86,7 @@ if ($conn->query($sql) === TRUE) {
     echo "Error creating payments table: " . $conn->error . "<br>";
 }
 
-// Create Availability Table
+
 $sql = "CREATE TABLE IF NOT EXISTS availability (
     id INT AUTO_INCREMENT PRIMARY KEY,
     service_id INT NOT NULL,
@@ -101,7 +101,7 @@ if ($conn->query($sql) === TRUE) {
     echo "Error creating availability table: " . $conn->error . "<br>";
 }
 
-// Create Reviews Table
+
 $sql = "CREATE TABLE IF NOT EXISTS reviews (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -118,7 +118,7 @@ if ($conn->query($sql) === TRUE) {
     echo "Error creating reviews table: " . $conn->error . "<br>";
 }
 
-// Create Promotions Table
+
 $sql = "CREATE TABLE IF NOT EXISTS promotions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
@@ -134,7 +134,7 @@ if ($conn->query($sql) === TRUE) {
     echo "Error creating promotions table: " . $conn->error . "<br>";
 }
 
-// Insert test data
+
 $sql = "INSERT INTO users (name, email, password, role) VALUES
     ('John Doe', 'john@example.com', 'password123', 'customer'),
     ('Admin', 'admin@example.com', 'adminpass', 'admin')";
@@ -144,6 +144,6 @@ if ($conn->query($sql) === TRUE) {
     echo "Error inserting test data into users table: " . $conn->error . "<br>";
 }
 
-// Close connection
+
 $conn->close();
 ?>
