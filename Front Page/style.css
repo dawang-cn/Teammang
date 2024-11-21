@@ -1,0 +1,165 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    color: #555;
+    background-image: url('./img/bg.jpg');/* Replace with your image path */
+    background-size: cover;   /* Ensures the image covers the entire screen */
+    background-position: center;  /* Centers the image */
+    background-repeat: no-repeat;  /* Prevents image from repeating */
+}
+
+/* Header Styling */
+header {
+    background-color: #6c63ff;
+    color: #fff;
+    padding: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 5px 10px;
+}
+
+nav ul li a:hover {
+    background-color: #5649cc;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+/* Section Styling */
+main {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+section {
+    margin: 20px 0;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+section h1, section h2 {
+    text-align: center;
+    color: #333;
+}
+
+section p {
+    font-size: 1rem;
+    color: #666;
+    margin: 10px 0;
+}
+
+/* Home Page Styling */
+.home-page {
+    background-image: url('New folder\istockphoto-1325095289-612x612.jpg'); /* Replace with your image path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 20px;
+}
+
+.home-page .intro {
+    text-align: center;
+    padding: 40px 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Adds a dark overlay for better text visibility */
+    color: white;
+}
+
+/* What We Do Page */
+.what-we-do-page ul {
+    list-style: disc;
+    margin: 10px 40px;
+}
+
+.what-we-do-page ul li {
+    margin: 5px 0;
+    font-size: 1rem;
+}
+
+/* Services Page */
+.services-page ul {
+    list-style: square;
+    margin: 10px 40px;
+}
+
+.services-page ul li {
+    margin: 5px 0;
+    font-size: 1rem;
+}
+
+/* Therapists Page */
+.therapist-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.therapist-card {
+    background: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.therapist-card img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    object-fit: cover;
+}
+
+.therapist-card h2 {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.therapist-card p {
+    font-size: 1rem;
+    color: #666;
+}
+
+.therapist-card:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+/* Footer Styling */
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #6c63ff;
+    color: white;
+    margin-top: 20px;
+}
