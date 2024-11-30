@@ -11,11 +11,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($full_name) && !empty($email) && !empty($phone_number) && !empty($password) && !empty($role)) {
         $email_check_query = "SELECT * FROM users WHERE email='$email' LIMIT 1";
 
-        if ($result->num_rows > 0) {
+        $result = $conn->query($email_check_query);
+        if ($result && $result->num_rows > 0) {
             $message = "Email already exists. Please use a different email address.";
             $message_type = "error";
         } else {
-           
             $sql = "INSERT INTO users (full_name, email, phone_number, password, role) 
                     VALUES ('$full_name', '$email', '$phone_number', '$password', '$role')";
 
@@ -33,7 +33,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-       
 
 <!DOCTYPE html>
 <html lang="en">
@@ -43,26 +42,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Add a New User</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-       
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(to right, #00aaff, #0077cc); 
             margin: 0;
             padding: 0;
+            background: url('../images/bg.jpg') no-repeat center center fixed;
+            background-size: cover;
         }
 
         .container {
             max-width: 600px;
             margin: 50px auto;
             padding: 30px;
-            background: white;
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 10px;
             box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
             text-align: center;
-            color: #0077cc;
+            color: #964B00;
             font-size: 32px;
             margin-bottom: 20px;
             font-weight: bold;
@@ -76,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-size: 16px;
             margin-bottom: 8px;
             display: block;
-            color: #333;
+            color:black;
         }
 
         input[type="text"],
@@ -86,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             width: 100%;
             padding: 12px;
             margin-bottom: 15px;
-            border: 2px solid #0077cc;
+            border: 2px solid #964B00;
             border-radius: 5px;
             font-size: 16px;
             transition: all 0.3s ease;
@@ -96,13 +95,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         input[type="email"]:focus,
         input[type="password"]:focus,
         select:focus {
-            border-color: #00aaff;
+            border-color: #C4A484;
             outline: none;
         }
 
-
         input[type="submit"] {
-            background: linear-gradient(to right, #00aaff, #0077cc);
+            background: linear-gradient(to top, #c79081 0%, #dfa579 100%);
             color: white;
             padding: 15px;
             border: none;
@@ -114,10 +112,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         input[type="submit"]:hover {
-            background: linear-gradient(to right, #0077cc, #00aaff);
+            background: radial-gradient(859px at 10% 20%, rgb(245, 220, 154) 0%, rgb(164, 78, 51) 90%);
+            
         }
 
-        
         .message {
             padding: 15px;
             margin-bottom: 20px;
@@ -127,18 +125,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .message.success {
-            background-color: #4caf50;
+            background-color: #964B00;
             color: white;
         }
 
         .message.error {
-            background-color: #f44336;
+            background-color: #964B00;
             color: white;
         }
 
         a {
             text-decoration: none;
-            color: #0077cc;
+            color: saddlebrown;
             font-size: 16px;
             text-align: center;
             display: block;
