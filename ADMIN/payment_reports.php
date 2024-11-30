@@ -1,7 +1,6 @@
 <?php
 include("setup.php");
 
-// Fetch payments and reports
 $payments = $conn->query("SELECT * FROM payments");
 
 ?>
