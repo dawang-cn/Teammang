@@ -1,35 +1,29 @@
 <?php
-include("setup.php");
+include("../setup.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['create'])) {
-  
         $user_id = $_POST['user_id'];
+        $therapist_id = $_POST['therapist_id'];
         $service_id = $_POST['service_id'];
         $appointment_date = $_POST['appointment_date'];
+        $start_time = $_POST['start_time'];
+        $end_time = $_POST['end_time'];
+        
+        $sql = "INSERT INTO appointments (user_id, therapist_id, service_id, appointment_date, start_time, end_time, status) 
+        VALUES (?, ?, ?, ?, ?, ?, 'pending')";
 
-        $sql = "INSERT INTO appointments (user_id, service_id, appointment_date) VALUES ('$user_id', '$service_id', '$appointment_date')";
-        if ($conn->query($sql) === TRUE) {
-            echo "Appointment created successfully!";
-        } else {
-            echo "Error: " . $conn->error;
+        if ($stmt = $conn->prepare($sql)) {
+          $stmt->bind_param("iiisss", $user_id, $therapist_id, $service_id, $appointment_date, $start_time, $end_time);
+          if ($stmt->execute()) {
+              echo "Appointment booked successfully!";
+          } else {
+              echo "Error booking appointment: " . $stmt->error;
+          }
+          $stmt->close();
         }
-    } elseif (isset($_POST['update'])) {
-        $id = $_POST['id'];
-        $status = $_POST['status'];
-
-        $sql = "UPDATE appointments SET status='$status' WHERE id=$id";
-        if ($conn->query($sql) === TRUE) {
-            echo "Appointment updated successfully!";
-        } else {
-            echo "Error: " . $conn->error;
         }
-    }
-}
-
-$sql = "SELECT * FROM appointments";
-$result = $conn->query($sql);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -40,14 +34,15 @@ $result = $conn->query($sql);
 <body>
     <h1>Manage Appointments</h1>
 
-    <form method="POST">
-        <h2>Create Appointment</h2>
-        <input type="text" name="user_id" placeholder="User ID" required>
-        <input type="text" name="service_id" placeholder="Service ID" required>
-        <input type="datetime-local" name="appointment_date" required>
-        <button type="submit" name="create">Create Appointment</button>
-    </form>
-
+    <form method="post" action="create_appointment.php">
+    User ID: <input type="text" name="user_id" required><br>
+    Therapist ID: <input type="text" name="therapist_id" required><br>
+    Service ID: <input type="text" name="service_id" required><br>
+    Appointment Date: <input type="date" name="appointment_date" required><br>
+    Start Time: <input type="time" name="start_time" required><br>
+    End Time: <input type="time" name="end_time" required><br>
+    <input type="submit" value="Book Appointment">
+</form>
     <h2>Existing Appointments</h2>
     <table>
         <tr>

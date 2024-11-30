@@ -1,5 +1,5 @@
 <?php
-include("setup.php");
+include("../setup.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['create'])) {

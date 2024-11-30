@@ -1,5 +1,5 @@
 <?php
-include("setup.php");
+include("../setup.php");
 $filter_type = isset($_GET['type']) ? $_GET['type'] : '';
 $filter_price_min = isset($_GET['price_min']) ? $_GET['price_min'] : 0;
 $filter_price_max = isset($_GET['price_max']) ? $_GET['price_max'] : 1000;

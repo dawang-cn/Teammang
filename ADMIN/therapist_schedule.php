@@ -1,5 +1,5 @@
 <?php
-include("setup.php");
+include("../setup.php");
 
 $availability = $conn->query("SELECT * FROM therapist_availability");
 

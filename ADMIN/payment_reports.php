@@ -1,5 +1,5 @@
 <?php
-include("setup.php");
+include("../setup.php");
 
 $payments = $conn->query("SELECT * FROM payments");
 

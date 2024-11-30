@@ -1,5 +1,5 @@
 <?php
-include("setup.php");
+include("../setup.php");
 
 
 $bookings = $conn->query("SELECT * FROM bookings");

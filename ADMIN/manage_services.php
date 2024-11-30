@@ -1,5 +1,5 @@
 <?php
-include("setup.php");
+include("../setup.php");
 
 $services = $conn->query("SELECT * FROM services");
 
