@@ -4,8 +4,7 @@ include("setup.php");
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
-    // Fetch user data to populate the form
-    $sql = "SELECT * FROM Users WHERE id = $id";
+    $sql = "SELECT * FROM users WHERE user_id = $id";
     $result = $conn->query($sql);
     $user = $result->fetch_assoc();
 }
@@ -17,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $role = mysqli_real_escape_string($conn, $_POST['role']);
 
     if (!empty($full_name) && !empty($email) && !empty($phone_number) && !empty($role)) {
-        $sql = "UPDATE Users SET full_name = '$full_name', email = '$email', phone_number = '$phone_number', role = '$role' WHERE id = $id";
+        $sql = "UPDATE users SET full_name = '$full_name', email = '$email', phone_number = '$phone_number', role = '$role' WHERE user_id = $id";
         
         if ($conn->query($sql) === TRUE) {
             $message = "User updated successfully!";

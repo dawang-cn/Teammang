@@ -1,7 +1,7 @@
 <?php
 include("setup.php");
 
-$sql = "SELECT * FROM Users";
+$sql = "SELECT * FROM users";
 $result = $conn->query($sql);
 ?>
 

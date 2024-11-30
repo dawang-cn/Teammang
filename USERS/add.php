@@ -9,15 +9,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $role = mysqli_real_escape_string($conn, $_POST['role']);
 
     if (!empty($full_name) && !empty($email) && !empty($phone_number) && !empty($password) && !empty($role)) {
-        $sql = "INSERT INTO Users (full_name, email, phone_number, password, role) 
-                VALUES ('$full_name', '$email', '$phone_number', '$password', '$role')";
+        $email_check_query = "SELECT * FROM users WHERE email='$email' LIMIT 1";
 
-        if ($conn->query($sql) === TRUE) {
-            $message = "New user added successfully!";
-            $message_type = "success";
-        } else {
-            $message = "Failed to add new user: " . $conn->error;
+        if ($result->num_rows > 0) {
+            $message = "Email already exists. Please use a different email address.";
             $message_type = "error";
+        } else {
+           
+            $sql = "INSERT INTO users (full_name, email, phone_number, password, role) 
+                    VALUES ('$full_name', '$email', '$phone_number', '$password', '$role')";
+
+            if ($conn->query($sql) === TRUE) {
+                $message = "New user added successfully!";
+                $message_type = "success";
+            } else {
+                $message = "Failed to add new user: " . $conn->error;
+                $message_type = "error";
+            }
         }
     } else {
         $message = "Please fill in all fields.";
@@ -25,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+       
 
 <!DOCTYPE html>
 <html lang="en">
