@@ -7,11 +7,9 @@ $dbname = "spa";
 
 $conn = new mysqli($servername, $username, $password);
 
-
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-
 
 $sql = "CREATE DATABASE IF NOT EXISTS $dbname";
 if ($conn->query($sql) === TRUE) {
@@ -19,7 +17,6 @@ if ($conn->query($sql) === TRUE) {
 } else {
     echo "Error creating database: " . $conn->error . "<br>";
 }
-
 
 $conn->select_db($dbname);
 
@@ -34,27 +31,19 @@ $sql = "CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )";
-if ($conn->query($sql) === TRUE) {
-    echo "Users table created successfully.<br>";
-} else {
-    echo "Error creating users table: " . $conn->error . "<br>";
-}
+$conn->query($sql);
 
 // Create services table
 $sql = "CREATE TABLE IF NOT EXISTS services (
     service_id INT AUTO_INCREMENT PRIMARY KEY,
     service_name VARCHAR(100) NOT NULL,
     description TEXT,
-    duration INT NOT NULL
+    duration INT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )";
-if ($conn->query($sql) === TRUE) {
-    echo "Services table created successfully.<br>";
-} else {
-    echo "Error creating services table: " . $conn->error . "<br>";
-}
+$conn->query($sql);
 
 // Create appointments table
 $sql = "CREATE TABLE IF NOT EXISTS appointments (
@@ -72,11 +61,7 @@ $sql = "CREATE TABLE IF NOT EXISTS appointments (
     FOREIGN KEY (therapist_id) REFERENCES users(user_id),
     FOREIGN KEY (service_id) REFERENCES services(service_id)
 )";
-if ($conn->query($sql) === TRUE) {
-    echo "Appointments table created successfully.<br>";
-} else {
-    echo "Error creating appointments table: " . $conn->error . "<br>";
-}
+$conn->query($sql);
 
 // Create payments table
 $sql = "CREATE TABLE IF NOT EXISTS payments (
@@ -89,31 +74,23 @@ $sql = "CREATE TABLE IF NOT EXISTS payments (
     payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (appointment_id) REFERENCES appointments(appointment_id)
 )";
-if ($conn->query($sql) === TRUE) {
-    echo "Payments table created successfully.<br>";
-} else {
-    echo "Error creating payments table: " . $conn->error . "<br>";
-}
+$conn->query($sql);
 
 // Create availability table
 $sql = "CREATE TABLE IF NOT EXISTS availability (
     availability_id INT AUTO_INCREMENT PRIMARY KEY,
-    therapist_id INT NOT NULL
+    therapist_id INT NOT NULL,
     date DATE NOT NULL,
     start_time TIME NOT NULL,
-    end_time TIME NOT NULL
+    end_time TIME NOT NULL,
     FOREIGN KEY (therapist_id) REFERENCES users(user_id)
 )";
-if ($conn->query($sql) === TRUE) {
-    echo "Availability table created successfully.<br>";
-} else {
-    echo "Error creating availability table: " . $conn->error . "<br>";
-}
+$conn->query($sql);
 
 // Create reviews table
 $sql = "CREATE TABLE IF NOT EXISTS reviews (
     review_id INT AUTO_INCREMENT PRIMARY KEY,
-    appoinment_id INT NOT NULL,
+    appointment_id INT NOT NULL,
     user_id INT NOT NULL,
     rating INT NOT NULL CHECK (rating BETWEEN 1 AND 5),
     comment TEXT,
@@ -121,40 +98,18 @@ $sql = "CREATE TABLE IF NOT EXISTS reviews (
     FOREIGN KEY (appointment_id) REFERENCES appointments(appointment_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 )";
-if ($conn->query($sql) === TRUE) {
-    echo "Reviews table created successfully.<br>";
-} else {
-    echo "Error creating reviews table: " . $conn->error . "<br>";
-}
+$conn->query($sql);
 
 // Create promotions table
 $sql = "CREATE TABLE IF NOT EXISTS promotions (
     promo_id INT AUTO_INCREMENT PRIMARY KEY,
-    promo_code VARCHAR(50) NOT NULL,
+    promo_code VARCHAR(50) NOT NULL UNIQUE,
     description TEXT,
     discount_percentage DECIMAL(5, 2) NOT NULL,
     start_date DATE NOT NULL,
-    end_date DATE NOT NULL,
-    
-)";
-if ($conn->query($sql) === TRUE) {
-    echo "Promotions table created successfully.<br>";
-} else {
-    echo "Error creating promotions table: " . $conn->error . "<br>";
-}
-
-// Close the connection
-$conn->close();
-$sql = "
-CREATE TABLE IF NOT EXISTS promotions (
-    promo_id INT AUTO_INCREMENT PRIMARY KEY,
-    promo_code VARCHAR(50) NOT NULL UNIQUE,
-    description TEXT NOT NULL,
-    discount_percent DECIMAL(5, 2) NOT NULL,
-    start_date DATE NOT NULL,
     end_date DATE NOT NULL
 )";
-if ($conn->query($sql) === FALSE) {
-    echo "Promotions table creation failed." . $conn->error . "<br>";
-}
+$conn->query($sql);
+
+$conn->close();
 ?>
