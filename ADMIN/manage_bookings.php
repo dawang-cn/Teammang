@@ -1,8 +1,13 @@
 <?php
 include("../setup.php");
 
-
+// Query to fetch bookings from the database
 $bookings = $conn->query("SELECT * FROM bookings");
+
+if (!$bookings) {
+    // If the query failed, display an error message
+    die("Query failed: " . $conn->error);
+}
 
 ?>
 
@@ -28,7 +33,9 @@ $bookings = $conn->query("SELECT * FROM bookings");
             </tr>
         </thead>
         <tbody>
-            <?php while ($row = $bookings->fetch_assoc()) { ?>
+            <?php 
+            // Loop through the result set and display each booking
+            while ($row = $bookings->fetch_assoc()) { ?>
                 <tr>
                     <td><?= $row['id']; ?></td>
                     <td><?= $row['service_id']; ?></td>
@@ -47,3 +54,7 @@ $bookings = $conn->query("SELECT * FROM bookings");
     </table>
 </body>
 </html>
+
+<?php
+$conn->close();
+?>

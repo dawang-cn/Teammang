@@ -17,7 +17,7 @@ include("../setup.php");
             <li><a href="manage_bookings.php">Manage Bookings</a></li>
             <li><a href="manage_services.php">Manage Services</a></li>
             <li><a href="therapist_schedule.php">Therapist Schedule</a></li>
-            <li><a href="payments_reports.php">Payments and Reports</a></li>
+            <li><a href="payment_reports.php">Payments and Reports</a></li>
         </ul>
     </nav>
 </body>
