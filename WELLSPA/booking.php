@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'setup.php'; 
+include ('setup.php'); 
 if (!isset($_SESSION['user_id'])) {
     die("You must be logged in to book an appointment.");
 }
@@ -99,7 +99,8 @@ $time_slots = [
 
         <!-- Submit Button -->
         <button type="submit" name="submit">Confirm Appointment</button>
-    </form>
+
+        
 </body>
 </html>
 
