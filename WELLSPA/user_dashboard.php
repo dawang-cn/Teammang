@@ -1,7 +1,6 @@
 <?php
-include 'db.php';
+include 'setup.php';
 
-// Check if the user is logged in, if not, redirect to login page
 session_start();
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -9,8 +8,6 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-
-// Fetch upcoming appointments
 $upcoming_sql = "SELECT a.appointment_id, s.service_name, a.appointment_date, a.start_time, a.status, u.full_name AS therapist_name
                  FROM appointments a
                  JOIN services s ON a.service_id = s.service_id
@@ -39,10 +36,65 @@ $promotions_result = $conn->query($promotions_sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
+    <style>
+        /* Basic styling for the dashboard */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        h1, h2 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .appointments-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .appointment-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 250px;
+            text-align: left;
+        }
+        .appointment-card h3 {
+            margin: 10px 0;
+            font-size: 1.2em;
+        }
+        .appointment-card p {
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+        .appointment-card a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 0.9em;
+        }
+        .account-settings, .promotions-list {
+            width: 80%;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .promotion-card {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
     <h1>Welcome to Your Dashboard</h1>
-    
+
     <!-- Upcoming Appointments -->
     <h2>Upcoming Appointments</h2>
     <div class="appointments-list">
@@ -51,8 +103,9 @@ $promotions_result = $conn->query($promotions_sql);
             while ($appointment = $upcoming_result->fetch_assoc()) {
                 echo "
                 <div class='appointment-card'>
-                    <p><strong>Service:</strong> {$appointment['service_name']}</p>
-                    <p><strong>Date:</strong> {$appointment['appointment_date']} <strong>Time:</strong> {$appointment['start_time']}</p>
+                    <h3>{$appointment['service_name']}</h3>
+                    <p><strong>Date:</strong> {$appointment['appointment_date']}</p>
+                    <p><strong>Time:</strong> {$appointment['start_time']}</p>
                     <p><strong>Therapist:</strong> {$appointment['therapist_name']}</p>
                     <p><strong>Status:</strong> {$appointment['status']}</p>
                     <a href='cancel_appointment.php?appointment_id={$appointment['appointment_id']}'>Cancel</a> | 
@@ -73,8 +126,9 @@ $promotions_result = $conn->query($promotions_sql);
             while ($appointment = $past_result->fetch_assoc()) {
                 echo "
                 <div class='appointment-card'>
-                    <p><strong>Service:</strong> {$appointment['service_name']}</p>
-                    <p><strong>Date:</strong> {$appointment['appointment_date']} <strong>Time:</strong> {$appointment['start_time']}</p>
+                    <h3>{$appointment['service_name']}</h3>
+                    <p><strong>Date:</strong> {$appointment['appointment_date']}</p>
+                    <p><strong>Time:</strong> {$appointment['start_time']}</p>
                     <p><strong>Therapist:</strong> {$appointment['therapist_name']}</p>
                     <p><strong>Status:</strong> {$appointment['status']}</p>
                     <a href='leave_review.php?appointment_id={$appointment['appointment_id']}'>Leave a Review</a>

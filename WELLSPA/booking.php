@@ -1,15 +1,11 @@
 <?php
 session_start();
-include 'db.php';  // Include your database connection
-
-// Check if user is logged in (ensure the user_id exists in session)
+include 'setup.php'; 
 if (!isset($_SESSION['user_id'])) {
     die("You must be logged in to book an appointment.");
 }
 
-$user_id = $_SESSION['user_id'];  // Get the logged-in user's ID
-
-// Static services and therapists list (based on your instructions)
+$user_id = $_SESSION['user_id'];  
 $services = [
     ['service_id' => 1, 'service_name' => 'Facial Massage', 'price' => 50],
     ['service_id' => 2, 'service_name' => 'Full Body Massage', 'price' => 100],
@@ -17,14 +13,12 @@ $services = [
     ['service_id' => 4, 'service_name' => 'Hair Treatments', 'price' => 80]
 ];
 
-// Static therapists list (based on your instructions)
 $therapists = [
     ['user_id' => 1, 'full_name' => 'Therapist 1'],
     ['user_id' => 2, 'full_name' => 'Therapist 2'],
     ['user_id' => 3, 'full_name' => 'Therapist 3']
 ];
 
-// Sample available time slots (with ranges)
 $time_slots = [
     '07:00-08:00 AM', '08:00-09:00 AM', '09:00-10:00 AM', '10:00-11:00 AM',
     '11:00-12:00 PM', '12:00-01:00 PM', '01:00-02:00 PM', '02:00-03:00 PM',

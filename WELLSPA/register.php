@@ -1,38 +1,24 @@
 <?php
-// Include the database connection
-include 'db.php';
-
-// Start session to manage user login state
+include 'setup.php';
 session_start();
-
-// Check if the user is already logged in, if so redirect to the dashboard
 if (isset($_SESSION['user_id'])) {
     header("Location: user_dashboard.php");
     exit();
 }
-
-// Check if the registration form is submitted
 if (isset($_POST['register'])) {
-    // Sanitize inputs to prevent SQL injection
     $full_name = $conn->real_escape_string($_POST['full_name']);
     $email = $conn->real_escape_string($_POST['email']);
     $phone_number = $conn->real_escape_string($_POST['phone_number']);
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
-
-    // Check if the passwords match
     if ($password !== $confirm_password) {
         $error_message = "Passwords do not match.";
     } else {
-        // Hash the password before saving it
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-        // Insert the new user into the database
         $sql = "INSERT INTO users (full_name, email, phone_number, password, role) 
                 VALUES ('$full_name', '$email', '$phone_number', '$hashed_password', 'customer')";
 
         if ($conn->query($sql) === TRUE) {
-            // Redirect to login page after successful registration
             header("Location: login.php");
             exit();
         } else {
@@ -53,7 +39,6 @@ if (isset($_POST['register'])) {
     <h1>Register</h1>
 
     <?php
-    // Display error message if any
     if (isset($error_message)) {
         echo "<p style='color: red;'>$error_message</p>";
     }

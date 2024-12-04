@@ -1,15 +1,11 @@
 <?php
-include 'db.php';
-
-// Fetch filter and sort parameters
+include 'setup.php';
 $filterType = $_GET['type'] ?? '';
 $priceRange = $_GET['price_range'] ?? '';
 $sortOrder = $_GET['sort'] ?? '';
 
-// Build query
 $sql = "SELECT service_id, service_name, description, duration, price FROM services WHERE 1=1";
 
-// Apply filters
 if (!empty($filterType)) {
     $sql .= " AND service_name LIKE '%$filterType%'";
 }
@@ -17,8 +13,6 @@ if (!empty($priceRange)) {
     $range = explode('-', $priceRange);
     $sql .= " AND price BETWEEN $range[0] AND $range[1]";
 }
-
-// Apply sorting
 if ($sortOrder === 'price') {
     $sql .= " ORDER BY price ASC";
 } elseif ($sortOrder === 'duration') {

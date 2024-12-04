@@ -1,5 +1,5 @@
 <?php
-include 'db.php';
+include 'setup.php';
 
 // Check if the user is an admin, if not, redirect to login page
 session_start();
