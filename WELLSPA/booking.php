@@ -1,6 +1,6 @@
 <?php
 session_start();
-include ('setup.php'); 
+include('setup.php'); 
 if (!isset($_SESSION['user_id'])) {
     die("You must be logged in to book an appointment.");
 }
@@ -31,79 +31,111 @@ $time_slots = [
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Page</title>
+    <title>Book an Appointment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #5D4037, #795548, #D7CCC8); /* Matching gradient */
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #FFFFFF; /* White */
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px 30px;
+        }
+        h1 {
+            text-align: center;
+            color: #964B00;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #555;
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #555;
+        }
+        select, input[type="date"], input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #CCC;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #964B00;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        button:hover {
+            background-color: #C4A484;
+        }
+        .step {
+            margin-bottom: 30px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Book an Appointment</h1>
-    <form action="confirmation.php" method="POST">
-        <!-- Step 1: Select Service and Therapist -->
-        <h2>Step 1: Select Service and Therapist</h2>
-
-        <!-- Service Selection -->
-        <label for="service_id">Select Service:</label>
-        <select name="service_id" required>
-            <?php foreach ($services as $service) { ?>
-                <option value="<?php echo $service['service_id']; ?>"><?php echo $service['service_name']; ?> - $<?php echo $service['price']; ?></option>
-            <?php } ?>
-        </select>
-
-        <br><br>
-
-        <!-- Therapist Selection -->
-        <label for="therapist_id">Select Therapist:</label>
-        <select name="therapist_id" required>
-            <?php foreach ($therapists as $therapist) { ?>
-                <option value="<?php echo $therapist['user_id']; ?>"><?php echo $therapist['full_name']; ?></option>
-            <?php } ?>
-        </select>
-
-        <br><br>
-
-        <!-- Step 2: Choose Date and Time -->
-        <h2>Step 2: Choose Date and Time</h2>
-
-        <!-- Date Picker -->
-        <label for="appointment_date">Select Date:</label>
-        <input type="date" name="appointment_date" required>
-
-        <br><br>
-
-        <!-- Time Selection (Dropdown) -->
-        <label for="start_time">Select Time:</label>
-        <select name="start_time" required>
-            <?php foreach ($time_slots as $time_slot) { ?>
-                <option value="<?php echo $time_slot; ?>"><?php echo $time_slot; ?></option>
-            <?php } ?>
-        </select>
-
-        <br><br>
-
-        <!-- Step 3: Confirmation and Payment -->
-        <h2>Step 3: Confirmation and Payment</h2>
-
-        <!-- Payment Method -->
-        <label for="payment_method">Payment Method:</label>
-        <select name="payment_method" required>
-            <option value="cash">Cash</option>
-            <option value="credit_card">Credit Card</option>
-            <option value="paypal">PayPal</option>
-        </select>
-
-        <br><br>
-
-        <!-- Promo Code (Optional) -->
-        <label for="promo_code">Promo Code (Optional):</label>
-        <input type="text" name="promo_code">
-
-        <br><br>
-
-        <!-- Submit Button -->
-        <button type="submit" name="submit">Confirm Appointment</button>
-
-        
+    <div class="container">
+        <h1>Book an Appointment</h1>
+        <form action="confirmation.php" method="POST">
+            <div class="step">
+                <h2>Step 1: Select Service and Therapist</h2>
+                <label for="service_id">Select Service:</label>
+                <select name="service_id" required>
+                    <?php foreach ($services as $service): ?>
+                        <option value="<?= $service['service_id'] ?>">
+                            <?= $service['service_name'] ?> - $<?= $service['price'] ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <label for="therapist_id">Select Therapist:</label>
+                <select name="therapist_id" required>
+                    <?php foreach ($therapists as $therapist): ?>
+                        <option value="<?= $therapist['user_id'] ?>">
+                            <?= $therapist['full_name'] ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="step">
+                <h2>Step 2: Choose Date and Time</h2>
+                <label for="appointment_date">Select Date:</label>
+                <input type="date" name="appointment_date" required>
+                <label for="start_time">Select Time:</label>
+                <select name="start_time" required>
+                    <?php foreach ($time_slots as $time_slot): ?>
+                        <option value="<?= $time_slot ?>">
+                            <?= $time_slot ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="step">
+                <h2>Step 3: Confirmation and Payment</h2>
+                <label for="payment_method">Payment Method:</label>
+                <select name="payment_method" required>
+                    <option value="cash">Cash</option>
+                    <option value="credit_card">Credit Card</option>
+                    <option value="paypal">PayPal</option>
+                </select>
+                <label for="promo_code">Promo Code (Optional):</label>
+                <input type="text" name="promo_code">
+            </div>
+            <button type="submit" name="submit">Confirm Appointment</button>
+        </form>
+    </div>
 </body>
 </html>
-
-<?php
-$conn->close();
-?>
