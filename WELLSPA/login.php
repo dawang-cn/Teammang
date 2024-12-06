@@ -140,6 +140,8 @@ if (isset($_POST['login'])) {
         </form>
 
         <p>Don't have an account? <a href="register.php">Register here</a>.</p>
+
+        <a href="display_users.php">Show Created Users</a>
     </div>
 
 </body>

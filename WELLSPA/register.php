@@ -1,31 +1,33 @@
 <?php
-include 'setup.php';
-session_start();
-if (isset($_SESSION['user_id'])) {
-    header("Location: user_dashboard.php");
-    exit();
-}
-if (isset($_POST['register'])) {
-    $full_name = $conn->real_escape_string($_POST['full_name']);
-    $email = $conn->real_escape_string($_POST['email']);
-    $phone_number = $conn->real_escape_string($_POST['phone_number']);
+include 'setup.php'; 
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $full_name = $_POST['full_name'];
+    $email = $_POST['email'];
+    $phone_number = $_POST['phone_number'];
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
+    $role = $_POST['role'];
     if ($password !== $confirm_password) {
-        $error_message = "Passwords do not match.";
-    } else {
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $sql = "INSERT INTO users (full_name, email, phone_number, password, role) 
-                VALUES ('$full_name', '$email', '$phone_number', '$hashed_password', 'customer')";
-
-        if ($conn->query($sql) === TRUE) {
-            header("Location: login.php");
-            exit();
-        } else {
-            $error_message = "Error: " . $conn->error;
-        }
+        echo "Passwords do not match!";
+        exit;
     }
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    $sql = "INSERT INTO users (full_name, email, phone_number, password, role) VALUES (?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssss", $full_name, $email, $phone_number, $hashed_password, $role);
+
+    if ($stmt->execute()) {
+        header('Location: login.php');
+        exit;
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+
+    $stmt->close();
 }
+
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -113,6 +115,37 @@ if (isset($_POST['register'])) {
         a:hover {
             text-decoration: underline;
         }
+
+        label.role {
+        display: block;
+        text-align: left;
+        font-weight: bold;
+        margin: 15px 0 5px;
+        color: #964B00;
+        display: flex;
+    }
+
+    select {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #C4A484;
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: #fff;
+        color: #333;
+        cursor: pointer;
+    }
+
+    select:focus {
+        border-color: #964B00;
+        outline: none;
+        background-color: #f9f9f9;
+    }
+
+    select option {
+        color: #333;
+    }
     </style>
 </head>
 <body>
@@ -121,18 +154,20 @@ if (isset($_POST['register'])) {
         <img src="../images/logo.png" alt="Logo" class="logo">
         <h1>Register</h1>
 
-        <?php
-        if (isset($error_message)) {
-            echo "<p class='error-message'>$error_message</p>";
-        }
-        ?>
-
         <form action="register.php" method="POST">
             <input type="text" name="full_name" id="full_name" class="form-input" required placeholder="Full Name"><br>
             <input type="email" name="email" id="email" class="form-input" required placeholder="Email"><br>
             <input type="text" name="phone_number" id="phone_number" class="form-input" required placeholder="Phone Number"><br>
             <input type="password" name="password" id="password" class="form-input" required placeholder="Password"><br>
             <input type="password" name="confirm_password" id="confirm_password" class="form-input" required placeholder="Confirm Password"><br>
+            
+            <label for="role">Role:</label>
+            <select id="role" name="role" required>
+                <option value="customer">Customer</option>
+                <option value="therapist">Therapist</option>
+                <option value="admin">Admin</option>
+            </select>
+
             <input type="submit" name="register" value="Register" class="form-submit">
         </form>
 
@@ -141,7 +176,3 @@ if (isset($_POST['register'])) {
 
 </body>
 </html>
-
-<?php
-$conn->close();
-?>
