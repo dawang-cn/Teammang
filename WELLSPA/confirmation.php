@@ -12,7 +12,18 @@ $therapist_id = $_POST['therapist_id'];
 $appointment_date = $_POST['appointment_date'];
 $start_time = $_POST['start_time'];
 $payment_method = $_POST['payment_method'];
+<<<<<<< HEAD
 $promo_code = $_POST['promo_code'] ?? null; // Optional promo code
+=======
+$promo_code = $_POST['promo_code'] ?? 'None'; 
+
+$services = [
+    1 => ['service_name' => 'Facial Massage', 'price' => 50],
+    2 => ['service_name' => 'Full Body Massage', 'price' => 100],
+    3 => ['service_name' => 'Manicure and Pedicure', 'price' => 40],
+    4 => ['service_name' => 'Hair Treatments', 'price' => 80]
+];
+>>>>>>> 5faebb8ce9a92eaf7b2b499847dad8faf080d06a
 
 // Fetch service details
 $service_query = "SELECT * FROM services WHERE service_id = ?";
@@ -44,10 +55,14 @@ if ($promo_code) {
     }
 }
 
+<<<<<<< HEAD
 // Calculate final price after discount
 $final_price = $service['price'] - ($service['price'] * ($promo_discount / 100));
 
 // Display the confirmation table
+=======
+$total_price = $selected_service['price'];
+>>>>>>> 5faebb8ce9a92eaf7b2b499847dad8faf080d06a
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -58,12 +73,20 @@ $final_price = $service['price'] - ($service['price'] * ($promo_discount / 100))
     <style>
         body {
             font-family: Arial, sans-serif;
+<<<<<<< HEAD
             background-color: #f7f7f7;
+=======
+            background: linear-gradient(to bottom, #5D4037, #795548, #D7CCC8);
+>>>>>>> 5faebb8ce9a92eaf7b2b499847dad8faf080d06a
             margin: 0;
             padding: 0;
         }
         .container {
+<<<<<<< HEAD
             max-width: 800px;
+=======
+            max-width: 600px;
+>>>>>>> 5faebb8ce9a92eaf7b2b499847dad8faf080d06a
             margin: 50px auto;
             background-color: #FFFFFF;
             border-radius: 10px;
@@ -72,6 +95,7 @@ $final_price = $service['price'] - ($service['price'] * ($promo_discount / 100))
         }
         h1 {
             text-align: center;
+<<<<<<< HEAD
             color: #2c3e50;
         }
         table {
@@ -88,12 +112,37 @@ $final_price = $service['price'] - ($service['price'] * ($promo_discount / 100))
         }
         th {
             background-color: #f1f1f1;
+=======
+            color: #964B00;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1em;
+            margin: 10px 0;
+        }
+        strong {
+            color: #555;
+        }
+        button {
+            background-color: #964B00;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #C4A484;
+>>>>>>> 5faebb8ce9a92eaf7b2b499847dad8faf080d06a
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Appointment Confirmation</h1>
+<<<<<<< HEAD
         <table>
             <tr>
                 <th>Service</th>
@@ -127,6 +176,20 @@ $final_price = $service['price'] - ($service['price'] * ($promo_discount / 100))
             </tr>
         </table>
         <a href="booking.php" style="display: block; margin-top: 20px; text-align: center; color: #964B00; font-weight: bold;">Back to Booking</a>
+=======
+        <h2>Your Appointment Details</h2>
+        <p><strong>Service:</strong> <?= $selected_service['service_name']; ?></p>
+        <p><strong>Price:</strong> $<?= $selected_service['price']; ?></p>
+        <p><strong>Therapist:</strong> <?= $selected_therapist; ?></p>
+        <p><strong>Date:</strong> <?= $appointment_date; ?></p>
+        <p><strong>Time:</strong> <?= $start_time; ?></p>
+        <p><strong>Payment Method:</strong> <?= ucfirst($payment_method); ?></p>
+        <p><strong>Promo Code:</strong> <?= $promo_code; ?></p>
+        <p><strong>Total Price:</strong> $<?= $total_price; ?></p>
+        <form action="home.php" method="POST">
+            <button type="submit" name="back" value="confirm">Go Back</button>
+        </form>
+>>>>>>> 5faebb8ce9a92eaf7b2b499847dad8faf080d06a
     </div>
 </body>
 </html>
