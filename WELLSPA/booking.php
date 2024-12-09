@@ -1,11 +1,8 @@
 <?php
 session_start();
 include('setup.php'); 
-<<<<<<< HEAD
 
 // Ensure the user is logged in before proceeding
-=======
->>>>>>> 5faebb8ce9a92eaf7b2b499847dad8faf080d06a
 if (!isset($_SESSION['user_id'])) {
     die("You must be logged in to book an appointment.");
 }
@@ -44,22 +41,14 @@ $time_slots = [
     <style>
         body {
             font-family: Arial, sans-serif;
-<<<<<<< HEAD
             background: linear-gradient(to bottom, #5D4037, #795548, #D7CCC8); 
-=======
-            background: linear-gradient(to bottom, #5D4037, #795548, #D7CCC8); /* Matching gradient */
->>>>>>> 5faebb8ce9a92eaf7b2b499847dad8faf080d06a
             margin: 0;
             padding: 0;
         }
         .container {
             max-width: 800px;
             margin: 50px auto;
-<<<<<<< HEAD
             background-color: #FFFFFF; 
-=======
-            background-color: #FFFFFF; /* White */
->>>>>>> 5faebb8ce9a92eaf7b2b499847dad8faf080d06a
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             padding: 20px 30px;
