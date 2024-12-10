@@ -1,42 +1,33 @@
 <?php
 include 'setup.php';
 
-// Services array
-$services = [
-    ['service_id' => 1, 'service_name' => 'Facial Massage', 'price' => 50],
-    ['service_id' => 2, 'service_name' => 'Full Body Massage', 'price' => 100],
-    ['service_id' => 3, 'service_name' => 'Manicure and Pedicure', 'price' => 40],
-    ['service_id' => 4, 'service_name' => 'Hair Treatments', 'price' => 80],
-];
-
-// Filters
-$serviceType = isset($_GET['service_type']) ? $_GET['service_type'] : '';
-$priceRange = isset($_GET['price_range']) ? $_GET['price_range'] : '';
-$sortBy = isset($_GET['sort_by']) ? $_GET['sort_by'] : 'popularity';
-
-// Build SQL query
+// Default query to fetch services without filters
 $sql = "SELECT * FROM services WHERE 1=1";
 
-if ($serviceType) {
-    $sql .= " AND service_id = '$serviceType'";
+// Handle service type filter
+if (isset($_GET['service_type']) && $_GET['service_type'] != '') {
+    $service_type = $_GET['service_type'];
+    $sql .= " AND service_id = '$service_type'";
 }
 
-if ($priceRange) {
-    $priceLimits = explode('-', $priceRange);
-    $sql .= " AND price BETWEEN {$priceLimits[0]} AND {$priceLimits[1]}";
+// Handle price range filter
+if (isset($_GET['price_range']) && $_GET['price_range'] != '') {
+    $price_range = $_GET['price_range'];
+    $price_limits = explode('-', $price_range);
+    $sql .= " AND price BETWEEN {$price_limits[0]} AND {$price_limits[1]}";
 }
 
-switch ($sortBy) {
-    case 'price':
+// Handle sorting options (price and duration)
+if (isset($_GET['sort_by']) && $_GET['sort_by'] != '') {
+    $sort_by = $_GET['sort_by'];
+    if ($sort_by == 'price') {
         $sql .= " ORDER BY price ASC";
-        break;
-    case 'popularity':
-    default:
-        $sql .= " ORDER BY service_id ASC";
-        break;
+    } elseif ($sort_by == 'duration') {
+        $sql .= " ORDER BY duration ASC";
+    }
 }
 
-// Execute query
+// Fetch filtered services
 $result = $conn->query($sql);
 ?>
 
@@ -45,7 +36,7 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Services</title>
+    <title>Our Services</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -131,39 +122,68 @@ $result = $conn->query($sql);
 <body>
     <div class="container">
         <h1>Our Services</h1>
-        <form class="filters" method="GET" action="">
+        <!-- Filter form -->
+        <form class="filters" method="GET" action="services.php">
+            <label for="service_type">Select Service</label>
             <select name="service_type">
-                <option value="">Select Service</option>
-                <?php foreach ($services as $service): ?>
-                    <option value="<?= $service['service_id'] ?>" <?= $serviceType == $service['service_id'] ? 'selected' : '' ?>>
-                        <?= $service['service_name'] ?>
-                    </option>
-                <?php endforeach; ?>
+                <option value="">All Services</option>
+                <option value="1">Massage Therapy</option>
+                <option value="2">Facial Treatments</option>
+                <option value="3">Body Treatments</option>
+                <option value="4">Manicure & Pedicure</option>
             </select>
+
+            <label for="price_range">Price Range</label>
             <select name="price_range">
-                <option value="">Price Range</option>
-                <option value="0-50" <?= $priceRange == '0-50' ? 'selected' : '' ?>>0 - 50</option>
-                <option value="51-100" <?= $priceRange == '51-100' ? 'selected' : '' ?>>51 - 100</option>
+                <option value="">All Prices</option>
+                <option value="0-50">0 - 50</option>
+                <option value="51-100">51 - 100</option>
+                <option value="101-200">101 - 200</option>
             </select>
+
+            <label for="sort_by">Sort By</label>
             <select name="sort_by">
-                <option value="popularity" <?= $sortBy == 'popularity' ? 'selected' : '' ?>>Sort by Popularity</option>
-                <option value="price" <?= $sortBy == 'price' ? 'selected' : '' ?>>Sort by Price</option>
+                <option value="price">Price</option>
+                <option value="duration">Duration</option>
             </select>
+
             <button type="submit">Filter</button>
         </form>
+
         <div class="service-cards">
             <?php if ($result && $result->num_rows > 0): ?>
                 <?php while ($row = $result->fetch_assoc()): ?>
                     <div class="service-card">
-                        <img src="../images/placeholder.jpg" alt="<?= $row['service_name'] ?>">
-                        <h2><?= $row['service_name'] ?></h2>
-                        <p><?= $row['description'] ?></p>
-                        <p class="price">$<?= number_format($row['price'], 2) ?></p>
-                        <button onclick="location.href='booking.php?service_id=<?= $row['service_id'] ?>'">Book Now</button>
+                        <?php
+                        // Determine the image based on the service
+                        $service_image = "";
+                        switch ($row['service_id']) {
+                            case 1: // Massage Therapy
+                                $service_image = 'massage.png';
+                                break;
+                            case 2: // Facial Treatments
+                                $service_image = 'facial.jpg';
+                                break;
+                            case 3: // Body Treatments
+                                $service_image = 'body_treatment.jpg';
+                                break;
+                            case 4: // Manicure & Pedicure
+                                $service_image = 'manicure_pedicure.jpg';
+                                break;
+                            default:
+                                $service_image = 'massage.png'; // Default image
+                        }
+                        ?>
+                        <img src="../images/<?= $service_image; ?>" alt="<?= htmlspecialchars($row['service_name']); ?>">
+                        <h2><?= htmlspecialchars($row['service_name']); ?></h2>
+                        <p class="price">$<?= htmlspecialchars($row['price']); ?></p>
+                        <p>Description: <?= htmlspecialchars($row['description']); ?></p>
+                        <p>Duration: <?= htmlspecialchars($row['duration']); ?> mins</p>
+                        <button onclick="window.location.href='booking.php?service_id=<?= $row['service_id']; ?>'">Book Now</button>
                     </div>
                 <?php endwhile; ?>
             <?php else: ?>
-                <p>No services found.</p>
+                <p>No services found based on your criteria.</p>
             <?php endif; ?>
         </div>
     </div>
