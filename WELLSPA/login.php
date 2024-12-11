@@ -1,15 +1,21 @@
 <?php
-session_start();
+session_start();  // Ensure session starts at the very beginning
+
+// Include the setup file for DB connection
 include 'setup.php';
+
 if (isset($_SESSION['user_id'])) {
+    // Redirect if the user is already logged in
     header("Location: user_dashboard.php");
-    exit();
+    exit();  // Ensure the script ends after redirection
 }
 
 if (isset($_POST['login'])) {
     $email = $conn->real_escape_string($_POST['email']);
     $password = $_POST['password'];
-    $sql = "SELECT user_id, full_name, email, password FROM users WHERE email = ?";
+    
+    // Prepared statement to fetch user details from the database
+    $sql = "SELECT user_id, full_name, email, password, role FROM users WHERE email = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -17,13 +23,25 @@ if (isset($_POST['login'])) {
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
+        
+        // Verify password
         if (password_verify($password, $user['password'])) {
+            // Set session variables
             $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['full_name'] = $user['full_name'];
             $_SESSION['email'] = $user['email'];
+            $_SESSION['role'] = $user['role'];  // Store the role in session
 
-            header("Location: user_dashboard.php");
-            exit();
+            // Check user role and redirect accordingly
+            if ($user['role'] === 'admin') {
+                // Redirect to admin dashboard if user is an admin
+                header("Location: admin_dashboard.php");
+                exit();  // Ensure the script ends after redirection
+            } else {
+                // Redirect to user dashboard if user is not an admin
+                header("Location: user_dashboard.php");
+                exit();  // Ensure the script ends after redirection
+            }
         } else {
             $error_message = "Invalid password.";
         }
@@ -148,5 +166,6 @@ if (isset($_POST['login'])) {
 </html>
 
 <?php
+// Close the connection at the end of the script
 $conn->close();
 ?>

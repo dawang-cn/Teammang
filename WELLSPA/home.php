@@ -2,6 +2,12 @@
 include 'setup.php';
 $services_sql = "SELECT service_name, description, price FROM services LIMIT 4";
 $services_result = $conn->query($services_sql);
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
 
 // Fetch reviews
 $reviews_sql = "SELECT u.full_name, r.rating, r.comment 
@@ -418,7 +424,21 @@ $reviews_result = $conn->query($reviews_sql);
         <p>Create an account today or schedule your first session with us!</p>
         <button onclick="location.href='register.php'">Sign Up</button>
         <button onclick="location.href='booking.php'">Schedule Now</button>
+        <div style="text-align: right; padding: 10px;">
+    <form action="logout.php" method="post" style="display: inline;">
+        <button type="submit" style="
+            background-color: #964B00; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 5px; 
+            cursor: pointer;
+        ">Logout</button>
+    </form>
+</div>
+
     </div>
+
 </body>
 </html>
 

@@ -27,6 +27,12 @@ $therapists = [
     ['user_id' => 2, 'full_name' => 'Therapist 2'],
     ['user_id' => 3, 'full_name' => 'Therapist 3']
 ];
+
+// After booking is confirmed, redirect to admin dashboard with booking ID
+header('Location: admin_dashboard.php?booking_id=' . $booking_id);
+exit;
+
+
 ?>
 
 <!DOCTYPE html>

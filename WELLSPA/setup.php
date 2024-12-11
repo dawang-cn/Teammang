@@ -121,4 +121,22 @@ CREATE TABLE IF NOT EXISTS promotions (
 if ($conn->query($sql) === FALSE) {
     echo "Promotions table creation failed." . $conn->error . "<br>";
 }
+
+// $sql = "
+// INSERT INTO users (full_name, email, phone_number, password, role) 
+// VALUES 
+//     ('John Dan Doe', 'dandoe@example.com', '1234567890', 'password123', 'customer'),
+//     ('Jane Jane Smith', 'janesmith@example.com', '0987654321', 'password456',  'therapist'),
+//     ('Admin Hello User', 'hello@example.com', '1122334455', 'adminpass', 'admin')
+// ";
+
+// if ($conn->query($sql) === TRUE) {
+//     echo "Sample data inserted successfully!";
+// } else {
+//     echo "Error inserting data: " . $conn->error;
+// }
+
+// $conn->close();
 ?>
+
+
