@@ -124,49 +124,45 @@ $conn->close();
     </div>
 
     <!-- Manage Bookings -->
-<section>
-    <h2>Manage Bookings</h2>
-    <table>
-        <tr>
-            <th>Booking ID</th>
-            <th>Customer</th>
-            <th>Therapist</th>
-            <th>Appointment Date</th>
-            <th>Appointment Time</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-        <?php while ($row = $bookings_result->fetch_assoc()): ?>
+    <section>
+        <h2>Manage Bookings</h2>
+        <table>
             <tr>
-                <td><?php echo $row['id']; ?></td>
-                <td><?php echo $row['user_id']; ?></td>
-                <td><?php echo $row['therapist_id']; ?></td>
-                <td><?php echo $row['appointment_date']; ?></td>
-                <td><?php echo $row['appointment_time']; ?></td>
-                <td><?php echo $row['status']; ?></td>
-                <td class="actions">
-                    <!-- Add a button to view the details -->
-                    <a href="appointment_details.php?booking_id=<?php echo $row['id']; ?>"><button>View Details</button></a>
-                    <button>Approve</button>
-                    <button>Cancel</button>
-                    <button>Reschedule</button>
-                </td>
+                <th>Booking ID</th>
+                <th>Customer</th>
+                <th>Therapist</th>
+                <th>Appointment Date</th>
+                <th>Appointment Time</th>
+                <th>Status</th>
+                <th>Actions</th>
             </tr>
-        <?php endwhile; ?>
-    </table>
-</section>
-
+            <?php while ($row = $bookings_result->fetch_assoc()): ?>
+                <tr>
+                    <td><?php echo $row['id']; ?></td>
+                    <td><?php echo $row['user_id']; ?></td>
+                    <td><?php echo $row['therapist_id']; ?></td>
+                    <td><?php echo $row['appointment_date']; ?></td>
+                    <td><?php echo $row['appointment_time']; ?></td>
+                    <td><?php echo $row['status']; ?></td>
+                    <td class="actions">
+                        <!-- Add a button to view the details -->
+                        <a href="appointment_details.php?booking_id=<?php echo $row['id']; ?>"><button>View Details</button></a>
+                        <button>Approve</button>
+                        <button>Cancel</button>
+                        <button>Reschedule</button>
+                    </td>
+                </tr>
+            <?php endwhile; ?>
+        </table>
+    </section>
 
     <!-- Add New Service -->
     <section class="add-service-form">
         <h2>Add New Service</h2>
-        <form action="add_service.php" method="POST">
-            <input type="text" name="name" required placeholder="Service Name">
-            <textarea name="description" required placeholder="Service Description"></textarea>
-            <input type="number" name="price" required placeholder="Service Price">
-            <input type="text" name="duration" required placeholder="Service Duration (e.g., 1 hour)">
-            <button type="submit">Add Service</button>
-        </form>
+        <!-- Link to redirect to the add_service.php page -->
+        <a href="add_service.php">
+            <button type="button">Add New Service</button>
+        </a>
     </section>
 
     <!-- Manage Payments -->
@@ -187,7 +183,6 @@ $conn->close();
                     <td><?php echo $row['amount']; ?></td>
                     <td><?php echo $row['status']; ?></td>
                 </tr>
-                
             <?php endwhile; ?>
         </table>
     </section>
